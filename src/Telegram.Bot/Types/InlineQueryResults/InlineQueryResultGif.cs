@@ -44,9 +44,9 @@ namespace Telegram.Bot.Types.InlineQueryResults
         /// <summary>
         /// Optional. Url of the thumbnail for the result
         /// </summary>
-        [JsonIgnore]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new string ThumbUrl { get; set; }
+        //[JsonIgnore]
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public new string ThumbUrl { get; set; }
 
         /// <summary>
         /// Optional. Thumbnail width
