@@ -712,7 +712,8 @@ namespace Telegram.Bot
         {
             var additionalParameters = new Dictionary<string, object>
             {
-                {"caption", caption}
+                {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.PhotoMessage, chatId, photo, disableNotification, replyToMessageId,
@@ -758,7 +759,8 @@ namespace Telegram.Bot
         {
             var additionalParameters = new Dictionary<string, object>
             {
-                {"caption", caption}
+                {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.PhotoMessage, chatId, photo, disableNotification, replyToMessageId,
@@ -840,6 +842,7 @@ namespace Telegram.Bot
                 {"duration", duration},
                 {"performer", performer},
                 {"title", title},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
             if (!string.IsNullOrEmpty(caption))
                 additionalParameters.Add("caption", caption);
@@ -858,6 +861,7 @@ namespace Telegram.Bot
                 {"performer", performer},
                 {"title", title},
                 {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.AudioMessage, chatId, audio, disableNotification, replyToMessageId,
@@ -910,7 +914,8 @@ namespace Telegram.Bot
             {
                 {"duration", duration},
                 {"performer", performer},
-                {"title", title}
+                {"title", title},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.AudioMessage, chatId, audio, disableNotification, replyToMessageId,
@@ -1011,7 +1016,8 @@ namespace Telegram.Bot
         {
             var additionalParameters = new Dictionary<string, object>
             {
-                {"caption", caption}
+                {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.DocumentMessage, chatId, document, disableNotification, replyToMessageId,
@@ -1057,7 +1063,8 @@ namespace Telegram.Bot
         {
             var additionalParameters = new Dictionary<string, object>
             {
-                {"caption", caption}
+                {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.DocumentMessage, chatId, document, disableNotification, replyToMessageId,
@@ -1242,7 +1249,8 @@ namespace Telegram.Bot
             var additionalParameters = new Dictionary<string, object>
             {
                 {"duration", duration},
-                {"caption", caption}
+                {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.VideoMessage, chatId, video, disableNotification, replyToMessageId,
@@ -1291,7 +1299,8 @@ namespace Telegram.Bot
             var additionalParameters = new Dictionary<string, object>
             {
                 {"duration", duration},
-                {"caption", caption}
+                {"caption", caption},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.VideoMessage, chatId, video, disableNotification, replyToMessageId,
@@ -1336,7 +1345,8 @@ namespace Telegram.Bot
         {
             var additionalParameters = new Dictionary<string, object>
             {
-                {"duration", duration}
+                {"duration", duration},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.VoiceMessage, chatId, audio, disableNotification, replyToMessageId,
@@ -1381,7 +1391,8 @@ namespace Telegram.Bot
         {
             var additionalParameters = new Dictionary<string, object>
             {
-                {"duration", duration}
+                {"duration", duration},
+                {"parse_mode", ParseMode.Html.ToModeString()}
             };
 
             return SendMessageAsync(MessageType.VoiceMessage, chatId, audio, disableNotification, replyToMessageId,
@@ -2118,7 +2129,7 @@ namespace Telegram.Bot
 
             var httpClientHandler = new HttpClientHandler();
 
-            if(WebProxy != null)
+            if (WebProxy != null)
             {
                 httpClientHandler.UseProxy = true;
                 httpClientHandler.Proxy = WebProxy;
@@ -2197,7 +2208,8 @@ namespace Telegram.Bot
                     throw new ApiRequestException("Request timed out", 408, e);
                 }
                 catch (HttpRequestException e)
-                    when (e.Message.Contains("400") || e.Message.Contains("403") || e.Message.Contains("409")) {}
+                    when (e.Message.Contains("400") || e.Message.Contains("403") || e.Message.Contains("409"))
+                { }
 #if !NETSTANDARD1_1
                 catch (UnsupportedMediaTypeException e)
                 {
@@ -2206,7 +2218,7 @@ namespace Telegram.Bot
 #endif
 
                 if (responseObject == null)
-                    responseObject = new ApiResponse<T> {Ok = false, Message = "No response received"};
+                    responseObject = new ApiResponse<T> { Ok = false, Message = "No response received" };
 
                 if (!responseObject.Ok)
                     throw ApiRequestException.FromApiResponse(responseObject);
