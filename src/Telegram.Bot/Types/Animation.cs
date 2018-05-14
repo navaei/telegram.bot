@@ -1,40 +1,42 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Telegram.Bot.Types
 {
     /// <summary>
     /// This object represents an animation file to be displayed in the message containing a <see cref="Game"/>.
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
     public class Animation
     {
         /// <summary>
         /// Unique file identifier.
         /// </summary>
-        [JsonProperty("file_id", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public string FileId { get; set; }
 
         /// <summary>
         /// Animation thumbnail as defined by sender.
         /// </summary>
-        [JsonProperty("thumb", Required = Required.Default)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public PhotoSize Thumb { get; set; }
 
         /// <summary>
         /// Original animation filename as defined by sender.
         /// </summary>
-        [JsonProperty("file_name", Required = Required.Default)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string FileName { get; set; }
 
         /// <summary>
         /// MIME type of the file as defined by sender.
         /// </summary>
-        [JsonProperty("mime_type", Required = Required.Default)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string MimeType { get; set; }
 
         /// <summary>
         /// File size.
         /// </summary>
-        [JsonProperty("file_size", Required = Required.Default)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int FileSize { get; set; }
     }
 }

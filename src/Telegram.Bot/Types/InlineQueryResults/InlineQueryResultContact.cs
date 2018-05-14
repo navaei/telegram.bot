@@ -1,6 +1,6 @@
-using System.ComponentModel;
-
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Telegram.Bot.Types.InlineQueryResults.Abstractions;
 
 namespace Telegram.Bot.Types.InlineQueryResults
 {
@@ -10,32 +10,60 @@ namespace Telegram.Bot.Types.InlineQueryResults
     /// <remarks>
     /// This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     /// </remarks>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class InlineQueryResultContact : InlineQueryResultNew
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
+    public class InlineQueryResultContact : InlineQueryResultBase,
+        IThumbnailInlineQueryResult,
+        IInputMessageContentResult
     {
         /// <summary>
         /// Contact's phone number
         /// </summary>
-        [JsonProperty("phone_number", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Contact's first name
         /// </summary>
-        [JsonProperty("first_name", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Optional. Contact's last name
         /// </summary>
-        [JsonProperty("last_name", Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string LastName { get; set; }
 
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string ThumbUrl { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ThumbWidth { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ThumbHeight { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public InputMessageContentBase InputMessageContent { get; set; }
+
+        private InlineQueryResultContact()
+            : base(InlineQueryResultType.Contact)
+        { }
+
         /// <summary>
-        /// Title of the result
+        /// Initializes a new inline query result
         /// </summary>
-        [JsonIgnore]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new string Title { get; set; }
+        /// <param name="id">Unique identifier of this result</param>
+        /// <param name="phoneNumber">Contact's phone number</param>
+        /// <param name="firstName">Contact's first name</param>
+        public InlineQueryResultContact(string id, string phoneNumber, string firstName)
+            : base(InlineQueryResultType.Contact, id)
+        {
+            PhoneNumber = phoneNumber;
+            FirstName = firstName;
+        }
     }
 }

@@ -1,22 +1,39 @@
-# Telegram Bot Api Library
+# .NET Client for Telegram Bot API
 
-[![Build status](https://ci.appveyor.com/api/projects/status/x0vwuxdhe644sys0/branch/master?svg=true)](https://ci.appveyor.com/project/MrRoundRobin/telegram-bot/branch/master)
-[![NuGet Release](https://img.shields.io/nuget/vpre/Telegram.Bot.svg?maxAge=3600)](https://www.nuget.org/packages/Telegram.Bot/)
-[![MyGet](https://img.shields.io/myget/telegram-bot/v/Telegram.bot.svg?maxAge=3600)](https://www.myget.org/feed/telegram-bot/package/nuget/Telegram.Bot)
-[![license](https://img.shields.io/github/license/TelegramBots/telegram.bot.svg?maxAge=2592000)](https://raw.githubusercontent.com/MrRoundRobin/telegram.bot/master/LICENSE.txt)
+[![Telegram Chat](https://img.shields.io/badge/Chat-Telegram-blue.svg)](https://t.me/tgbots_dotnet)
+[![license](https://img.shields.io/github/license/TelegramBots/telegram.bot.svg?maxAge=2592000)](https://raw.githubusercontent.com/TelegramBots/telegram.bot/master/LICENSE.txt)
 
-C# library to talk to Telegrams [Bot API](https://core.telegram.org/bots/api)
+|Package|Branch|Build|Test|
+|:-----:|:----:|:---:|:--:|
+| [NuGet ![NuGet Release](https://img.shields.io/nuget/vpre/Telegram.Bot.svg?label=Telegram.Bot&maxAge=3600)](https://www.nuget.org/packages/Telegram.Bot/) | `master` | [![Build status](https://ci.appveyor.com/api/projects/status/x0vwuxdhe644sys0/branch/master?svg=true)](https://ci.appveyor.com/project/MrRoundRobin/telegram-bot/branch/master) | [![Test Status](https://img.shields.io/travis/TelegramBots/Telegram.Bot/master.svg?maxAge=3600&label=Test)](https://travis-ci.org/TelegramBots/Telegram.Bot) |
+| [MyGet ![MyGet](https://img.shields.io/myget/telegram-bot/v/Telegram.bot.svg?label=Telegram.Bot&maxAge=3600)](https://www.myget.org/feed/telegram-bot/package/nuget/Telegram.Bot) | `develop` | [![Build status](https://ci.appveyor.com/api/projects/status/x0vwuxdhe644sys0/branch/develop?svg=true)](https://ci.appveyor.com/project/MrRoundRobin/telegram-bot/branch/develop) | [![Test Status](https://img.shields.io/travis/TelegramBots/Telegram.Bot/develop.svg?maxAge=3600&label=Test)](https://travis-ci.org/TelegramBots/Telegram.Bot) |
 
-## Basic Usage
+.NET client for [Telegram Bot API](https://core.telegram.org/bots/api). The Bot API is an HTTP-based interface created for developers keen on building bots for Telegram.
 
-```C#
-static async void testApiAsync()
+Join our **super group on Telegram**: [`@tgbots_dotnet`](https://t.me/tgbots_dotnet)
+
+> If you need the latest features(tested but unstable), use [MyGet feed](https://www.myget.org/feed/telegram-bot/package/nuget/Telegram.Bot) (auto deployed from `develop` branch) until we update the NuGet package with stable changes.
+
+## Migrate to v14
+
+In our last major release, version 14, almost all of the library is re-written. If you are planning to upgrade, have a look at [**v13 to v14 migration wiki**](./docs/wikis/migration/v13-to-v14.md).
+
+## Getting Started
+
+First, talk to [BotFather](https://t.me/botfather) on Telegram to get an API token. Place your token in method below and call the method.
+
+```c#
+static async Task TestApiAsync()
 {
-    var Bot = new Telegram.Bot.Api("your API access Token");
-    var me = await Bot.GetMeAsync();
-    System.Console.WriteLine("Hello my name is " + me.FirstName);
+    var botClient = new Telegram.Bot.TelegramBotClient("your API access Token");
+    var me = await botClient.GetMeAsync();
+    System.Console.WriteLine($"Hello! My name is {me.FirstName}");
 }
 ```
+
+## Learning More
+
+If you don't know how to use this project or what is available for a Telegram bot, check the self-documented [Systems Integration tests](./test/Telegram.Bot.Tests.Integ/) which are runnable examples of API methods.
 
 Before submitting issues please consult following resources:
 
@@ -25,24 +42,22 @@ Before submitting issues please consult following resources:
 * [API docs](https://core.telegram.org/bots/api)
 * [Webhook docs](https://core.telegram.org/bots/webhooks)
 * [Examples](https://github.com/TelegramBots/telegram.bot.examples)
+* [Tests cases](./test/Telegram.Bot.Tests.Integ/)
 
 ## Installation
 
 Install as [NuGet package](https://www.nuget.org/packages/Telegram.Bot/):
 
+Package manager:
+
 ```powershell
 Install-Package Telegram.Bot
 ```
 
-For testing you can use the [MyGet feed](https://www.myget.org/gallery/telegram-bot) with automated builds
+.NET CLI:
 
-## API Coverage
+```bash
+dotnet add package Telegram.Bot
+```
 
-* [Inline Mode](https://core.telegram.org/bots/inline)
-* [Bot API 3.2](https://core.telegram.org/bots/api-changelog)
-* [Payments](https://core.telegram.org/bots/payments) (Needs some testing)
-* [Games](https://core.telegram.org/bots/games)
-
-Missing / TODO (last check 23.07.2017):
-
-* [Making requests when getting updates](https://core.telegram.org/bots/api#making-requests-when-getting-updates)
+For testing you can use the [MyGet feed](https://www.myget.org/gallery/telegram-bot) with automated builds.

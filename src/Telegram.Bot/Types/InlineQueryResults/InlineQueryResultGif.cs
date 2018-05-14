@@ -1,6 +1,7 @@
-using System.ComponentModel;
-
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InlineQueryResults.Abstractions;
 
 namespace Telegram.Bot.Types.InlineQueryResults
 {
@@ -9,58 +10,72 @@ namespace Telegram.Bot.Types.InlineQueryResults
     /// By default, this animated GIF file will be sent by the user with optional caption.
     /// Alternatively, you can provide message_text to send it instead of the animation.
     /// </summary>
-    public class InlineQueryResultGif : InlineQueryResultNew
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
+    public class InlineQueryResultGif : InlineQueryResultBase,
+                                        ICaptionInlineQueryResult,
+                                        IThumbnailUrlInlineQueryResult,
+                                        ITitleInlineQueryResult,
+                                        IInputMessageContentResult
     {
         /// <summary>
         /// A valid URL for the GIF file. File size must not exceed 1MB
         /// </summary>
-        [JsonProperty("gif_url", Required = Required.Always)]
-        public string Url { get; set; }
+        [JsonProperty(Required = Required.Always)]
+        public string GifUrl { get; set; }
 
         /// <summary>
-        /// Optional. Width of the GIF
+        /// Optional. Width of the GIF.
         /// </summary>
-        [JsonProperty("gif_width", Required = Required.Default)]
-        public int Width { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int GifWidth { get; set; }
 
         /// <summary>
-        /// Optional. Height of the GIF
+        /// Optional. Height of the GIF.
         /// </summary>
-        [JsonProperty("gif_height", Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public int Height { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int GifHeight { get; set; }
 
         /// <summary>
-        /// Optional. Duration of the GIF
+        /// Optional. Duration of the GIF.
         /// </summary>
-        [JsonProperty("gif_duration", Required = Required.Default)]
-        public int Duration { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int GifDuration { get; set; }
 
-        /// <summary>
-        /// Optional. Caption of the GIF file to be sent
-        /// </summary>
-        [JsonProperty("caption", Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Caption { get; set; }
 
-        /// <summary>
-        /// Optional. Url of the thumbnail for the result
-        /// </summary>
-        //[JsonIgnore]
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //public new string ThumbUrl { get; set; }
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public ParseMode ParseMode { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(Required = Required.Always)]
+        public string ThumbUrl { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Title { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public InputMessageContentBase InputMessageContent { get; set; }
+
+        private InlineQueryResultGif()
+            : base(InlineQueryResultType.Gif)
+        { }
 
         /// <summary>
-        /// Optional. Thumbnail width
+        /// Initializes a new inline query result
         /// </summary>
-        [JsonIgnore]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new int ThumbWidth { get; set; }
-
-        /// <summary>
-        /// Optional. Thumbnail height
-        /// </summary>
-        [JsonIgnore]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new int ThumbHeight { get; set; }
-
+        /// <param name="id">Unique identifier of this result</param>
+        /// <param name="gifUrl">Width of the GIF</param>
+        /// <param name="thumbUrl">Url of the thumbnail for the result.</param>
+        public InlineQueryResultGif(string id, string gifUrl, string thumbUrl)
+            : base(InlineQueryResultType.Gif, id)
+        {
+            GifUrl = gifUrl;
+            ThumbUrl = thumbUrl;
+        }
     }
 }

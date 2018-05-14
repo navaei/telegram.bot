@@ -1,4 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InlineQueryResults.Abstractions;
 
 namespace Telegram.Bot.Types.InlineQueryResults
 {
@@ -8,31 +11,76 @@ namespace Telegram.Bot.Types.InlineQueryResults
     /// <remarks>
     /// This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     /// </remarks>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class InlineQueryResultDocument : InlineQueryResultNew
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
+    public class InlineQueryResultDocument : InlineQueryResultBase,
+                                             ICaptionInlineQueryResult,
+                                             IThumbnailInlineQueryResult,
+                                             ITitleInlineQueryResult,
+                                             IInputMessageContentResult
     {
-        /// <summary>
-        /// Optional. Caption of the document to be sent, 0-200 characters
-        /// </summary>
-        [JsonProperty("caption", Required = Required.Default)]
-        public string Caption { get; set; }
-
         /// <summary>
         /// A valid URL for the file
         /// </summary>
-        [JsonProperty("document_url", Required = Required.Always)]
-        public string Url { get; set; }
+        [JsonProperty(Required = Required.Always)]
+        public string DocumentUrl { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(Required = Required.Always)]
+        public string Title { get; set; }
 
         /// <summary>
         /// Mime type of the content of the file, either “application/pdf” or “application/zip”
         /// </summary>
-        [JsonProperty("mime_type", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public string MimeType { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Caption { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public ParseMode ParseMode { get; set; }
 
         /// <summary>
         /// Optional. Short description of the result
         /// </summary>
-        [JsonProperty("description", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public string Description { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string ThumbUrl { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ThumbWidth { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ThumbHeight { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public InputMessageContentBase InputMessageContent { get; set; }
+
+        private InlineQueryResultDocument()
+            : base(InlineQueryResultType.Document)
+        { }
+
+        /// <summary>
+        /// Initializes a new inline query result
+        /// </summary>
+        /// <param name="id">Unique identifier of this result</param>
+        /// <param name="documentUrl">A valid URL for the file</param>
+        /// <param name="title">Title of the result</param>
+        /// <param name="mimeType">Mime type of the content of the file, either “application/pdf” or “application/zip”</param>
+        public InlineQueryResultDocument(string id, string documentUrl, string title, string mimeType)
+            : base(InlineQueryResultType.Document, id)
+        {
+            DocumentUrl = documentUrl;
+            Title = title;
+            MimeType = mimeType;
+        }
     }
 }

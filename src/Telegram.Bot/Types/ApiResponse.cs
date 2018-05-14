@@ -1,42 +1,43 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Telegram.Bot.Types
 {
     /// <summary>
-    /// The Api Response
+    /// Represents bot API response
     /// </summary>
-    /// <typeparam name="T">The resultant object</typeparam>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class ApiResponse<T>
+    /// <typeparam name="TResult">Expected type of operation result</typeparam>
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
+    public class ApiResponse<TResult>
     {
         /// <summary>
         /// Gets a value indicating whether the request was successful.
         /// </summary>
-        [JsonProperty("ok", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public bool Ok { get; set; }
 
         /// <summary>
         /// Gets the result object.
         /// </summary>
-        [JsonProperty("result", Required = Required.Default)]
-        public T ResultObject { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public TResult Result { get; set; }
 
         /// <summary>
         /// Gets the error message.
         /// </summary>
-        [JsonProperty("description", Required = Required.Default)]
-        public string Message { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets the error code.
         /// </summary>
-        [JsonProperty("error_code", Required = Required.Default)]
-        public int Code { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ErrorCode { get; set; }
 
         /// <summary>
         /// Contains information about why a request was unsuccessful.
         /// </summary>
-        [JsonProperty("parameters")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ResponseParameters Parameters { get; set; }
     }
 }

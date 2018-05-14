@@ -1,82 +1,78 @@
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Telegram.Bot.Types.Enums
 {
     /// <summary>
     /// The type of a <see cref="Message"/>
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter), true)]
     public enum MessageType
     {
         /// <summary>
         /// The <see cref="Message"/> is unknown
         /// </summary>
-        UnknownMessage = 0,
+        Unknown = 0,
 
         /// <summary>
         /// The <see cref="Message"/> contains text
         /// </summary>
-        TextMessage,
+        Text,
 
         /// <summary>
         /// The <see cref="Message"/> contains a <see cref="PhotoSize"/>
         /// </summary>
-        PhotoMessage,
+        Photo,
 
         /// <summary>
-        /// The <see cref="Message"/> contains an <see cref="Audio"/>
+        /// The <see cref="Message"/> contains an <see cref="Types.Audio"/>
         /// </summary>
-        AudioMessage,
+        Audio,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Video"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Video"/>
         /// </summary>
-        VideoMessage,
+        Video,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Voice"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Voice"/>
         /// </summary>
-        VoiceMessage,
+        Voice,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Document"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Document"/>
         /// </summary>
-        DocumentMessage,
+        Document,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Sticker"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Sticker"/>
         /// </summary>
-        StickerMessage,
+        Sticker,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Location"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Location"/>
         /// </summary>
-        LocationMessage,
+        Location,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Contact"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Contact"/>
         /// </summary>
-        ContactMessage,
+        Contact,
 
         /// <summary>
-        /// The <see cref="Message"/> contains meta informations, for example <see cref="Message.GroupChatCreated"/> or <see cref="Message.NewChatTitle"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Venue"/>
         /// </summary>
-        ServiceMessage,
+        Venue,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Venue"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.Game"/>
         /// </summary>
-        VenueMessage,
+        Game,
 
         /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="Game"/>
+        /// The <see cref="Message"/> contains a <see cref="Types.VideoNote"/>
         /// </summary>
-        GameMessage,
-
-        /// <summary>
-        /// The <see cref="Message"/> contains a <see cref="VideoNote"/>
-        /// </summary>
-        VideoNoteMessage,
+        VideoNote,
 
         /// <summary>
         /// The <see cref="Message"/> contains a <see cref="Invoice"/>
@@ -87,43 +83,65 @@ namespace Telegram.Bot.Types.Enums
         /// The <see cref="Message"/> contains a <see cref="SuccessfulPayment"/>
         /// </summary>
         SuccessfulPayment,
-    }
 
-    internal static class MessageTypeExtension
-    {
-        internal static KeyValuePair<string, string> ToKeyValue(this MessageType type)
-        {
-            switch (type)
-            {
-                case MessageType.TextMessage:
-                    return new KeyValuePair<string, string>("sendMessage", "text");
-                case MessageType.PhotoMessage:
-                    return new KeyValuePair<string, string>("sendPhoto", "photo");
-                case MessageType.AudioMessage:
-                    return new KeyValuePair<string, string>("sendAudio", "audio");
-                case MessageType.VideoMessage:
-                    return new KeyValuePair<string, string>("sendVideo", "video");
-                case MessageType.VoiceMessage:
-                    return new KeyValuePair<string, string>("sendVoice", "voice");
-                case MessageType.DocumentMessage:
-                    return new KeyValuePair<string, string>("sendDocument", "document");
-                case MessageType.StickerMessage:
-                    return new KeyValuePair<string, string>("sendSticker", "sticker");
-                case MessageType.LocationMessage:
-                    return new KeyValuePair<string, string>("sendLocation", "latitude");
-                case MessageType.ContactMessage:
-                    return new KeyValuePair<string, string>("sendContact", "phone_number");
-                case MessageType.VenueMessage:
-                    return new KeyValuePair<string, string>("sendVenue", "latitude");
-                case MessageType.GameMessage:
-                    return new KeyValuePair<string, string>("sendGame", "game_short_name");
-                case MessageType.VideoNoteMessage:
-                    return new KeyValuePair<string, string>("sendVideoNote", "video_note");
-                case MessageType.Invoice:
-                    return new KeyValuePair<string, string>("sendInvoice", "title");
-                default:
-                    throw new NotImplementedException();
-            }
-        } 
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.ConnectedWebsite"/>
+        /// </summary>
+        WebsiteConnected,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.NewChatMembers"/>
+        /// </summary>
+        ChatMembersAdded,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.LeftChatMember"/>
+        /// </summary>
+        ChatMemberLeft,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.NewChatTitle"/>
+        /// </summary>
+        ChatTitleChanged,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.NewChatPhoto"/>
+        /// </summary>
+        ChatPhotoChanged,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.PinnedMessage"/>
+        /// </summary>
+        MessagePinned,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.DeleteChatPhoto"/>
+        /// </summary>
+        ChatPhotoDeleted,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.GroupChatCreated"/>
+        /// </summary>
+        GroupCreated,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.SupergroupChatCreated"/>
+        /// </summary>
+        SupergroupCreated,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains a <see cref="Message.ChannelChatCreated"/>
+        /// </summary>
+        ChannelCreated,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains non-default <see cref="Message.MigrateFromChatId"/>
+        /// </summary>
+        MigratedToSupergroup,
+
+        /// <summary>
+        /// The <see cref="Message"/> contains non-default <see cref="Message.MigrateToChatId"/>
+        /// </summary>
+        MigratedFromGroup
     }
 }

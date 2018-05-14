@@ -1,29 +1,30 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Telegram.Bot.Types.Payments
 {
     /// <summary>
     /// This object represents one shipping option.
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
     public class ShippingOption
     {
         /// <summary>
         /// Shipping option identifier
         /// </summary>
-        [JsonProperty("id")]
+        [JsonProperty(Required = Required.Always)]
         public string Id { get; set; }
 
         /// <summary>
         /// Option title
         /// </summary>
-        [JsonProperty("title")]
+        [JsonProperty(Required = Required.Always)]
         public string Title { get; set; }
 
         /// <summary>
         /// List of price portions
         /// </summary>
-        [JsonProperty("prices")]
-        public LabeledPrice[] Prices { get; set; } 
+        [JsonProperty(Required = Required.Always)]
+        public LabeledPrice[] Prices { get; set; }
     }
 }

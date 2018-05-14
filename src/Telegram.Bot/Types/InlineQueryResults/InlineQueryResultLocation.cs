@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Telegram.Bot.Types.InlineQueryResults.Abstractions;
 
 namespace Telegram.Bot.Types.InlineQueryResults
 {
@@ -8,19 +10,65 @@ namespace Telegram.Bot.Types.InlineQueryResults
     /// <remarks>
     /// This will only work in Telegram versions released after 9 April, 2016. Older clients will ignore them.
     /// </remarks>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class InlineQueryResultLocation : InlineQueryResultNew
+    [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
+    public class InlineQueryResultLocation : InlineQueryResultBase,
+        IThumbnailInlineQueryResult,
+        ITitleInlineQueryResult,
+        IInputMessageContentResult,
+        ILocationInlineQueryResult
     {
-        /// <summary>
-        /// Latitude of the location in degrees
-        /// </summary>
-        [JsonProperty("latitude", Required = Required.Always)]
+        /// <inheritdoc />
+        [JsonProperty(Required = Required.Always)]
         public float Latitude { get; set; }
 
-        /// <summary>
-        /// Longitude of the location in degrees
-        /// </summary>
-        [JsonProperty("longitude", Required = Required.Always)]
+        /// <inheritdoc />
+        [JsonProperty(Required = Required.Always)]
         public float Longitude { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(Required = Required.Always)]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Period in seconds for which the location can be updated, should be between 60 and 86400.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int LivePeriod { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string ThumbUrl { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ThumbWidth { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int ThumbHeight { get; set; }
+
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public InputMessageContentBase InputMessageContent { get; set; }
+
+        private InlineQueryResultLocation()
+            : base(InlineQueryResultType.Location)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new inline query result
+        /// </summary>
+        /// <param name="id">Unique identifier of this result</param>
+        /// <param name="latitude">Latitude of the location in degrees</param>
+        /// <param name="longitude">Longitude of the location in degrees</param>
+        /// <param name="title">Title of the result</param>
+        public InlineQueryResultLocation(string id, float latitude, float longitude, string title)
+            : base(InlineQueryResultType.Location, id)
+        {
+            Latitude = latitude;
+            Longitude = longitude;
+            Title = title;
+        }
     }
 }
